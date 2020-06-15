@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>40 bpm</h1>
+    <label for="metrica">Definir metrica</label>
+    <input type="number" name="metrica" value="4" id="metrica">
+    <button id="plus-ten">+10 bpm</button>
+    <input type="range" min="40" max="260" value="40" id="slider">
+    <audio src="assets/metronomo.wav" id="audio"></audio>
+    <audio src="assets/acento.mp3" id="acento"></audio>
+    <button id="play">Play</button>
+    <button id="minus-ten">-10 bpm</button>
+    <input id="myInput" type="text" value="Swag" />
+
+    <script>
+
+        var test = "test";
+        document.getElementById("myInput").value = test;
+
+        // let metrica = document.getElementById('metrica').value.number()
+        const slider = document.getElementById('slider') //Selector de Velocidad
+        const h1 = document.querySelector('h1') //Display del metronomo
+        const play = document.getElementById('play') //Boton Play
+        const audio = document.getElementById('audio') //Tick en beats 1 al 3
+        const acento = document.getElementById('acento') //Tick en el beat 3
+        const plusTen = document.getElementById('plus-ten') //Boton de subir velocidad +10bpm
+        const minusTen = document.getElementById('minus-ten') //Boton de bajar velocidad -10bpm
+
+        let currentBpm = 40 //Velocidad global del metronomo
+        let isPlaying = false  //Estado de la aplicacion
+        let timer = null //estado del bpm
+        let compas = 0 //numero de beat que transita el metro
+
+
+        metrica.addEventListener('change', () => metrica.value = metrica)
+
+        console.log(metrica)
+
+        function tick() {
+            if (compas <= metrica - 1) {
+                audio.currentTime = 0
+                audio.play()
+                compas++
+                console.log(metrica)
+            } else {
+                acento.currentTime = 0
+                acento.play()
+                compas = 0
+            }
+            // console.log(compas)
+        }
+
+        function setBpm() {
+            clearInterval(timer)
+            timer = setInterval(tick, (60000) / currentBpm)
+            console.log(currentBpm)
+        }
+
+        plusTen.addEventListener('click', function () {
+            currentBpm = currentBpm + 10
+            slider.value = currentBpm
+            h1.innerHTML = slider.value + ' bpm'
+            setBpm()
+            // tick()
+        })
+
+        minusTen.addEventListener('click', function () {
+            currentBpm = currentBpm - 10
+            slider.value = currentBpm
+            h1.innerHTML = slider.value + ' bpm'
+            setBpm()
+            // tick()
+        })
+
+        slider.addEventListener('change', function () {
+            h1.innerHTML = this.value + ' bpm'
+            currentBpm = parseInt(this.value)
+            setBpm()
+        })
+
+        play.addEventListener('click', function () {
+            if (isPlaying) {
+                clearInterval(timer)
+            } else {
+                setBpm()
+            }
+            isPlaying = !isPlaying
+            console.log("play state is", isPlaying)
+        })
+
+    </script>
+</body>
+
+</html>
